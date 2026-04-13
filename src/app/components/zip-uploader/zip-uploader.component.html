@@ -18,6 +18,10 @@
             ou use o botão abaixo
           </div>
 
+          <div class="text muted" *ngIf="!file">
+            As imagens contendo lixo serão processadas pela IA em até 7 minutos e só aparecerão no mapa se tiverem metadados de latitude e longitude.
+          </div>
+
           <div class="text" *ngIf="file">
             Arquivo pronto para envio:<br />
             <strong>{{ fileName }}</strong>
