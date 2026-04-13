@@ -1,0 +1,37 @@
+<div class="header bg-gradient-eco pb-8 pt-md-6">
+  <div class="container-fluid">
+    <div class="header-body">
+      <h2 class="text-white mb-1">Ranking colaborativo</h2>
+      <p class="text-white-50 mb-0">Veja os usuários que mais contribuíram com denúncias.</p>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid mt--7">
+  <div class="card shadow border-0">
+    <div class="card-body">
+      <div *ngIf="reportsError" class="alert alert-warning mb-4">{{ reportsError }}</div>
+
+      <div class="ranking-list" *ngIf="userRanking.length > 0; else emptyState">
+        <div class="ranking-row" *ngFor="let rank of userRanking; let i = index; trackBy: trackByRankingId">
+          <div class="ranking-position">{{ i + 1 }}</div>
+          <img [src]="rank.photo || 'https://ui-avatars.com/api/?name=' + rank.name" alt="Usuário">
+          <div class="flex-grow-1">
+            <strong>{{ rank.name }}</strong>
+            <div>
+              <span class="level-pill" [ngClass]="getUserLevel(rank.count).badgeClass">{{ getUserLevel(rank.count).name }}</span>
+            </div>
+          </div>
+          <div class="ranking-count">
+            <strong>{{ rank.count }}</strong>
+            <small>denúncias</small>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #emptyState>
+        <div class="empty-state">O ranking aparecerá assim que as primeiras denúncias forem enviadas.</div>
+      </ng-template>
+    </div>
+  </div>
+</div>

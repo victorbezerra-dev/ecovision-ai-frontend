@@ -23,18 +23,20 @@
   </div>
 </div>
 <div class="container-fluid mt--7">
-  <div class="row">
-    <div class="container-fluid px-0">
+  <div class="row mb-4">
+    <div class="col-12">
       <app-urban-degradation-map
         [title]="'Mapa de sustentabilidade urbana'"
         [center]="[-8.762, -63.9039]"
+        [zoom]="13"
         (addNew)="onAddNewPoint()"
-      >
-        [zoom]="13">
+        (reportLocationSelected)="onReportLocationSelected($event)"
+        [reportPoints]="reports">
       </app-urban-degradation-map>
     </div>
   </div>
-</div>
+
+
 
 <!-- Overlay do popup -->
 <div class="zip-overlay" *ngIf="showZip" (click)="closeZip()">
@@ -42,4 +44,46 @@
     <button class="zip-close" (click)="closeZip()">✕</button>
     <app-zip-uploader></app-zip-uploader>
   </div>
+</div>
+
+<div class="zip-overlay" *ngIf="isReporting" (click)="closeReportModal()">
+  <div class="zip-dialog report-dialog" (click)="$event.stopPropagation()">
+    <button class="zip-close" (click)="closeReportModal()">✕</button>
+    <h4 class="zip-title text-left">Nova denúncia colaborativa</h4>
+
+    <div class="form-group text-left">
+      <label>Localização selecionada no mapa</label>
+      <div class="location-box" *ngIf="newReport.latitude; else noLocation">
+        {{ newReport.latitude | number:'1.6-6' }}, {{ newReport.longitude | number:'1.6-6' }}
+      </div>
+      <ng-template #noLocation>
+        <div class="location-box muted">Clique no mapa para selecionar o local da denúncia.</div>
+      </ng-template>
+    </div>
+
+    <div class="form-group text-left">
+      <label>Foto do local</label>
+      <input class="form-control" type="file" accept="image/*" (change)="handleFileInput($event)">
+      <div class="preview-wrap mt-3" *ngIf="imagePreview">
+        <img [src]="imagePreview" alt="Pré-visualização" class="preview-image">
+        <div class="preview-actions">
+          <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeSelectedFile()">Remover</button>
+          <button class="btn btn-success btn-sm" type="button" (click)="analyzeImage()" [disabled]="analyzing">{{ analyzing ? 'Analisando...' : 'Mock: gerar descrição' }}</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group text-left">
+      <label>Descrição</label>
+      <textarea class="form-control" rows="5" [(ngModel)]="newReport.description" placeholder="Descreva o tipo de resíduo, quantidade e referência do local"></textarea>
+    </div>
+
+    <button class="btn btn-primary btn-block" type="button" (click)="submitReport()" [disabled]="submitting || !newReport.latitude || !newReport.description.trim()">
+      {{ submitting ? 'Enviando...' : 'Enviar denúncia' }}
+    </button>
+  </div>
+</div>
+
+<div class="image-overlay" *ngIf="zoomedImage" (click)="zoomedImage = null">
+  <img [src]="zoomedImage" alt="Zoom da imagem" class="zoomed-image" (click)="$event.stopPropagation()">
 </div>

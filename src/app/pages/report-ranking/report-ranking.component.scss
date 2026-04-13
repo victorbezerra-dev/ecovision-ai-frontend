@@ -1,0 +1,92 @@
+.container-fluid {
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ranking-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border: 1px solid #edf2f7;
+  border-radius: 1rem;
+  padding: 1rem;
+  background: #fff;
+}
+
+.ranking-row img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.ranking-position {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e8fff1;
+  color: #198754;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.ranking-count {
+  text-align: right;
+}
+
+.ranking-count small {
+  display: block;
+  color: #6c757d;
+}
+
+.level-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .2rem .7rem;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.badge-gray {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.badge-green {
+  background: #d1e7dd;
+  color: #0f5132;
+}
+
+.badge-blue {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.badge-purple {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.empty-state {
+  border: 1px dashed #ced4da;
+  border-radius: .75rem;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+@media (max-width: 768px) {
+  .ranking-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

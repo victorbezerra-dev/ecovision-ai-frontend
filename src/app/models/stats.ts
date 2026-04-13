@@ -1,12 +1,12 @@
-export interface TipoContagem {
-  [tipo: string]: number;
+export interface TypeCount {
+  [type: string]: number;
 }
 
 export interface ClusterStats {
-  centro: [number, number];         
-  total_pontos: number;
-  por_tipo: TipoContagem;          
-  datas: string[];                  
+  center: [number, number];         
+  total_points: number;
+  by_type: TypeCount;          
+  dates: string[];                  
 }
 
 

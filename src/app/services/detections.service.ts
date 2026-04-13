@@ -5,13 +5,11 @@ import { DetectionItem, DetectionResponse } from '../models/detection';
 
 @Injectable({ providedIn: 'root' })
 export class DetectionsService {
-  private readonly API_URL = 'https://zhhrbj49-8000.brs.devtunnels.ms/';
+  private readonly API_URL = 'https://ecovision-api.wonderfulmushroom-0044c3af.brazilsouth.azurecontainerapps.io/api/v1/';
 
   constructor(private http: HttpClient) {}
 
   getDetections(): Observable<DetectionItem[]> {
-    return this.http.get<DetectionResponse>(this.API_URL + 'pontos').pipe(
-      map(resp => resp?.data ?? [])
-    );
+    return this.http.get<DetectionItem[]>(this.API_URL + 'points');
   }
 }

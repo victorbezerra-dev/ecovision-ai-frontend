@@ -1,12 +1,12 @@
 /*!
 
 =========================================================
-* Argon Dashboard Angular - v1.5.0
+* EcoVision Dashboard Angular - v1.5.0
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-angular
+* Product Page: https://www.creative-tim.com/product/eco-vision-dashboard-angular
 * Copyright 2019 Smart Flow (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-angular/blob/master/LICENSE.md)
+* Licensed under MIT (https://github.com/creativetimofficial/eco-vision-dashboard-angular/blob/master/LICENSE.md)
 
 * Coded by Smart Flow
 

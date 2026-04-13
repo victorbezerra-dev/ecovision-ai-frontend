@@ -20,7 +20,7 @@ export class AboutComponent {
   stack = [
     { label: 'Angular', value: '17+' },
     { label: 'Leaflet', value: 'Mapas OSM' },
-    { label: 'Bootstrap/Argon', value: 'UI base' },
+    { label: 'Bootstrap/EcoVision', value: 'UI base' },
     { label: 'RxJS', value: 'streams' },
     { label: 'FastAPI (Python)', value: 'API' },
     { label: 'Python', value: 'Treino/serving modelo' },

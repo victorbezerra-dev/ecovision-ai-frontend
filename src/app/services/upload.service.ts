@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UploadService {
-  private readonly API_URL = 'https://zhhrbj49-8000.brs.devtunnels.ms/';
+  private readonly API_URL = 'https://ecovision-api.wonderfulmushroom-0044c3af.brazilsouth.azurecontainerapps.io/api/v1/';
 
   constructor(private http: HttpClient) {}
 
@@ -12,7 +12,7 @@ export class UploadService {
     const form = new FormData();
     form.append('file', file, file.name);
 
-    const req = new HttpRequest('POST', this.API_URL, form, {
+    const req = new HttpRequest('POST', this.API_URL + 'upload', form, {
       reportProgress: true,
     });
 

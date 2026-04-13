@@ -5,7 +5,7 @@ import { ClusterStats } from '../models/stats';
 
 @Injectable({ providedIn: 'root' })
 export class StatsService {
-  private readonly baseUrl = 'https://zhhrbj49-8000.brs.devtunnels.ms';
+  private readonly baseUrl = 'https://ecovision-api.wonderfulmushroom-0044c3af.brazilsouth.azurecontainerapps.io/api/v1';
   private readonly endpoint = `${this.baseUrl}/stats`;
 
   constructor(private http: HttpClient) {}

@@ -9,6 +9,8 @@ declare interface RouteInfo {
 }
 export const ROUTES: RouteInfo[] = [
     { path: '/overview', title: 'Overview',  icon: 'ni-tv-2 text-primary', class: '' },
+    { path: '/reports/list', title: 'Lista de denúncias',  icon:'ni-bullet-list-67 text-orange', class: '' },
+    { path: '/reports/ranking', title: 'Ranking',  icon:'ni-chart-bar-32 text-info', class: '' },
     { path: '/about', title: 'About',  icon:'ni-planet text-blue', class: '' },
 ];
 
@@ -19,7 +21,7 @@ export const ROUTES: RouteInfo[] = [
 })
 export class SidebarComponent implements OnInit {
 
-  public menuItems: any[];
+  public menuItems: any[] = [];
   public isCollapsed = true;
 
   constructor(private router: Router) { }
