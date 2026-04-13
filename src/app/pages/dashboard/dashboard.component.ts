@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { ReportsService } from '../../services/reports.service';
 import { ReportItem, UserProfile } from '../../models/report';
 import { User } from 'firebase/auth';
+import { UploadService } from '../../services/upload.service';
 
 @Component({
   selector: "app-dashboard",
@@ -49,6 +50,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private statsService: StatsService,
     private authService: AuthService,
     private reportsService: ReportsService,
+    private uploadService: UploadService,
   ) {}
 
   ngOnInit() {
@@ -163,7 +165,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.analyzing = true;
 
     try {
-      this.newReport.description = await this.generateMockImageDescription(this.selectedFile);
+      const response = await this.uploadService.describeImage(this.selectedFile).toPromise();
+      this.newReport.description = response?.description?.trim() || '';
+
+      if (!this.newReport.description) {
+        throw new Error('A API não retornou uma descrição válida para a imagem.');
+      }
     } catch (error) {
       console.error('Erro ao analisar imagem', error);
     } finally {
@@ -292,35 +299,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       };
       reader.onerror = reject;
     });
-  }
-
-  private async generateMockImageDescription(file: File): Promise<string> {
-    await this.delay(700);
-
-    const fileName = file.name.toLowerCase();
-    const fileType = (file.type || '').toLowerCase();
-
-    if (fileName.includes('entulho') || fileName.includes('obra')) {
-      return 'Mock: foi identificado descarte de entulho de construção em quantidade moderada, espalhado em área aberta.';
-    }
-
-    if (fileName.includes('plastico') || fileName.includes('garrafa')) {
-      return 'Mock: a imagem sugere acúmulo de resíduos plásticos, com várias embalagens e garrafas descartadas irregularmente.';
-    }
-
-    if (fileName.includes('pneu')) {
-      return 'Mock: foram observados pneus descartados de forma irregular, indicando necessidade de recolhimento adequado.';
-    }
-
-    if (fileType.startsWith('image/')) {
-      return 'Mock: possível ponto de descarte irregular com presença de lixo visível e volume aproximado de pequeno a médio porte.';
-    }
-
-    return 'Mock: não foi possível classificar o resíduo com precisão, mas há indícios de descarte irregular no local.';
-  }
-
-  private delay(ms: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   private resetReportForm(): void {

@@ -68,7 +68,7 @@
         <img [src]="imagePreview" alt="Pré-visualização" class="preview-image">
         <div class="preview-actions">
           <button class="btn btn-outline-secondary btn-sm" type="button" (click)="removeSelectedFile()">Remover</button>
-          <button class="btn btn-success btn-sm" type="button" (click)="analyzeImage()" [disabled]="analyzing">{{ analyzing ? 'Analisando...' : 'Mock: gerar descrição' }}</button>
+          <button class="btn btn-success btn-sm" type="button" (click)="analyzeImage()" [disabled]="analyzing">{{ analyzing ? 'Analisando...' : 'Gerar descrição com IA' }}</button>
         </div>
       </div>
     </div>
