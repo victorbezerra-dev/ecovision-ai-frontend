@@ -79,8 +79,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.sub = this.statsService.fetchStats().subscribe({
       next: (arr) => {
         this.stats = arr || [];
-        console.log("oiiii")
-        console.log(this.stats)
         this.loading = false;
       },
       error: (err) => {
