@@ -1,7 +1,6 @@
 <nav class="navbar navbar-vertical navbar-expand-md navbar-light bg-white" id="sidenav-main">
   <div class="container-fluid">
-    <!-- Toggler -->
-    <button class="navbar-toggler" type="button" (click)="isCollapsed=!isCollapsed"
+    <button class="navbar-toggler" type="button" (click)="toggleSidebar()"
        aria-controls="sidenav-collapse-main">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -14,9 +13,7 @@
            style="height: 60px;">
     </a>
 
-    <!-- Collapse -->
-    <div class="collapse navbar-collapse"  [ngbCollapse]="isCollapsed" id="sidenav-collapse-main">
-      <!-- Collapse header -->
+    <div class="navbar-collapse" [ngbCollapse]="isCollapsed" [animation]="false" id="sidenav-collapse-main">
       <div class="navbar-collapse-header d-md-none">
         <div class="row">
           <div class="col-6 collapse-brand">
@@ -25,17 +22,17 @@
             </a>
           </div>
           <div class="col-6 collapse-close">
-            <button type="button" class="navbar-toggler" (click)="isCollapsed=!isCollapsed">
+            <button type="button" class="navbar-toggler" (click)="closeSidebar()">
               <span></span>
               <span></span>
             </button>
           </div>
         </div>
       </div>
-      <!-- Navigation -->
+
       <ul class="navbar-nav">
           <li *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-              <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link">
+              <a routerLinkActive="active" [routerLink]="[menuItem.path]" class="nav-link" (click)="closeSidebar(); $event.stopPropagation()">
                   <i class="ni {{menuItem.icon}}"></i>
                   {{menuItem.title}}
               </a>
