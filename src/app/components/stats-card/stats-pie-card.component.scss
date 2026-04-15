@@ -5,10 +5,30 @@
   place-items: center;
 }
 
+.card.card-stats {
+  overflow: hidden;
+}
+
+.chart-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
 
 canvas {
-  max-width: 300px; /* ajuste livre: 200–300px */
-  max-height: 200px;
+  max-width: 330px;
+  max-height: 420px;
   width: 100% !important;
   height: auto !important;
+}
+
+@media (min-width: 769px) {
+  .chart-wrapper {
+    justify-content: flex-start;
+  }
+
+  canvas {
+    max-width: 380px;
+    max-height: 340px;
+  }
 }
