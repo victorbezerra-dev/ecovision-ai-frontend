@@ -184,4 +184,4 @@ The application uses Firebase Authentication for user sign-in and collaborative 
 
 ## License
 
-Please check the `LICENSE.md` file for license details.
+This project is licensed under the GNU General Public License v3.0 - see the [LICENSE](./LICENSE) file for details.
