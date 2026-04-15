@@ -8,7 +8,9 @@ Angular frontend for the Eco Vision AI platform. This application provides a das
 > - In the **Main Features** section: add **one image per main feature**
 > - In the **Run locally** section: add **an image showing the app running in the browser**
 
-![Suggested cover image - main application screen](docs/images/app-overview.png)
+<div align="center">
+  <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/476ea234-a933-4a99-8336-d24251e4ed0f" />
+</div>
 
 ## Overview
 
@@ -27,13 +29,14 @@ This project was built with Angular and includes:
 - Displays cluster and environmental stats
 - Presents visual information for monitoring degradation indicators
 
-![Suggested image - dashboard and statistics](docs/images/dashboard.png)
+<img width="2880" height="1634" alt="image" src="https://github.com/user-attachments/assets/346493a8-fea9-4072-9d81-e6b40ae159bc" />
+
 
 ### 2. Urban degradation map
 - Shows mapped report points
 - Helps identify affected areas geographically
 
-![Suggested image - urban degradation map](docs/images/urban-degradation-map.png)
+<img width="2880" height="1606" alt="image" src="https://github.com/user-attachments/assets/105faf95-f47b-4959-966f-ce5847c8da69" />
 
 ### 3. Collaborative reporting
 - Authenticated users can create new reports
@@ -43,7 +46,7 @@ This project was built with Angular and includes:
   - optional image
   - report status
 
-![Suggested image - collaborative reporting flow](docs/images/collaborative-reporting.png)
+<img width="2880" height="1646" alt="image" src="https://github.com/user-attachments/assets/059e41ad-d5fc-47b4-a2cc-86cca4797b1a" />
 
 ### 4. Real image analysis
 The frontend sends image files to the backend endpoint below:
@@ -66,7 +69,7 @@ Expected response format:
 
 The returned `description` is automatically used to populate the report description field.
 
-![Suggested image - image analysis and automatic description](docs/images/image-analysis.png)
+<img width="2878" height="1546" alt="image" src="https://github.com/user-attachments/assets/b51c9e8b-db85-48c2-ac08-497c5867f49c" />
 
 ## Tech Stack
 
@@ -116,7 +119,7 @@ npm start
 
 After starting the project, you can also add a screenshot here showing the application running locally:
 
-![Suggested image - application running locally](docs/images/running-locally.png)
+<img width="2170" height="678" alt="image" src="https://github.com/user-attachments/assets/8dd5f9d4-a922-4613-a249-426cfa219f4a" />
 
 The development server will be available at:
 
