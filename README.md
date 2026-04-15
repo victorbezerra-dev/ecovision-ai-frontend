@@ -2,12 +2,6 @@
 
 Angular frontend for the Eco Vision AI platform. This application provides a dashboard for visualizing urban environmental degradation data, uploading ZIP datasets, and creating collaborative reports with image-based description analysis.
 
-> 📸 **Where to place application images:**
->
-> - Right below this introduction: add a **cover image or general screenshot of the system**
-> - In the **Main Features** section: add **one image per main feature**
-> - In the **Run locally** section: add **an image showing the app running in the browser**
-
 <div align="center">
   <img width="300" height="300" alt="image" src="https://github.com/user-attachments/assets/476ea234-a933-4a99-8336-d24251e4ed0f" />
 </div>
