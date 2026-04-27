@@ -4,7 +4,7 @@ import { ClusterStats } from "../../models/stats";
 import { Subscription } from "rxjs";
 import { AuthService } from '../../services/auth.service';
 import { ReportsService } from '../../services/reports.service';
-import { ReportItem, UserProfile } from '../../models/report';
+import { ReportCategory, ReportItem, UserProfile } from '../../models/report';
 import { User } from 'firebase/auth';
 import { UploadService } from '../../services/upload.service';
 
@@ -33,12 +33,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
   user: User | null = null;
   profile: UserProfile | null = null;
   isReporting = false;
+  selectingReportLocation = false;
   submitting = false;
   analyzing = false;
   selectedFile: File | null = null;
   imagePreview: string | null = null;
   zoomedImage: string | null = null;
+  reportCategories: Array<{ value: ReportCategory; label: string }> = [
+    { value: 'trash', label: 'Lixo irregular' },
+    { value: 'pothole', label: 'Buracos na via' },
+    { value: 'public-lighting', label: 'Iluminação pública' },
+    { value: 'security', label: 'Segurança' },
+    { value: 'sidewalk', label: 'Calçada / acessibilidade' },
+    { value: 'other', label: 'Outro problema urbano' },
+  ];
   newReport = {
+    category: '' as ReportCategory | '',
     description: '',
     latitude: 0,
     longitude: 0,
@@ -102,12 +112,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.showZip = false;
   }
 
-  openReportModal(): void {
-    if (!this.user) {
-      this.signIn();
-      return;
-    }
+  startReportLocationSelection(): void {
+    this.selectingReportLocation = true;
+    this.isReporting = false;
+  }
 
+  openReportModal(): void {
     this.isReporting = true;
   }
 
@@ -117,14 +127,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     this.isReporting = false;
+    this.resetReportForm();
+  }
+
+  cancelReportLocationSelection(): void {
+    this.selectingReportLocation = false;
   }
 
   onReportLocationSelected(coords: [number, number]): void {
     this.newReport.latitude = coords[0];
     this.newReport.longitude = coords[1];
-    if (!this.isReporting) {
-      this.isReporting = true;
-    }
+    this.selectingReportLocation = false;
+    this.isReporting = true;
   }
 
   async signIn(): Promise<void> {
@@ -187,7 +201,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (!this.newReport.latitude || !this.newReport.description.trim()) {
+    if (!this.newReport.latitude || !this.newReport.category || !this.newReport.description.trim()) {
       return;
     }
 
@@ -200,6 +214,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         userId: this.user.uid,
         userName: this.user.displayName || 'Anônimo',
         userPhoto: this.user.photoURL || '',
+        category: this.newReport.category,
         latitude: this.newReport.latitude,
         longitude: this.newReport.longitude,
         description: this.newReport.description.trim(),
@@ -314,7 +329,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private resetReportForm(): void {
-    this.newReport = { description: '', latitude: 0, longitude: 0 };
+    this.newReport = { category: '', description: '', latitude: 0, longitude: 0 };
+    this.selectingReportLocation = false;
     this.removeSelectedFile();
   }
 }

@@ -1,4 +1,11 @@
 export type ReportStatus = 'pending' | 'resolved' | 'invalid';
+export type ReportCategory =
+  | 'trash'
+  | 'pothole'
+  | 'public-lighting'
+  | 'security'
+  | 'sidewalk'
+  | 'other';
 
 export interface UserProfile {
   uid: string;
@@ -13,6 +20,7 @@ export interface ReportItem {
   userId: string;
   userName: string;
   userPhoto: string;
+  category: ReportCategory;
   latitude: number;
   longitude: number;
   description: string;

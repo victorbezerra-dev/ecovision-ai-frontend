@@ -245,8 +245,12 @@
 }
 
 .report-dialog {
-  max-width: 680px;
-  text-align: left;
+  max-height: 90vh;   
+  overflow-y: auto;   
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  border-radius: 12px;
 }
 
 .preview-actions {

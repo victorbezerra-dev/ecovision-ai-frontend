@@ -16,16 +16,22 @@
         <div class="report-cta-card">
           <div>
             <span class="report-cta-eyebrow">Denúncia colaborativa</span>
-            <h4 class="mb-2">Encontrou um ponto de descarte irregular?</h4>
+            <h4 class="mb-2">Encontrou um problema urbano na cidade?</h4>
             <p class="mb-0 text-muted">
-              Assim você ajuda a prefeitura a identificar pontos de lixo com mais rapidez e também contribui como cidadão para uma cidade mais limpa.
+              Assim você ajuda a prefeitura a identificar problemas urbanos com mais rapidez e também contribui como cidadão para uma cidade mais segura, acessível e bem cuidada.
             </p>
           </div>
 
-          <button class="btn btn-danger report-cta-button" type="button" (click)="openReportModal()">
-            <i class="ni ni-notification-70 mr-2"></i>
-            Fazer denúncia
-          </button>
+          <div class="report-cta-actions">
+            <button class="btn btn-danger report-cta-button" type="button" (click)="startReportLocationSelection()">
+              <i class="ni ni-pin-3 mr-2"></i>
+              Marcar denúncia no mapa
+            </button>
+
+            <small class="text-muted d-block mt-2" *ngIf="selectingReportLocation">
+              Agora clique no mapa para posicionar o pin da denúncia.
+            </small>
+          </div>
         </div>
       </div>
     </div>
@@ -38,6 +44,9 @@
           [zoom]="13"
           (addNew)="onAddNewPoint()"
           (reportLocationSelected)="onReportLocationSelected($event)"
+          (reportLocationSelectionCanceled)="cancelReportLocationSelection()"
+          [selectingReportLocation]="selectingReportLocation"
+          [selectedReportLocation]="newReport.latitude ? [newReport.latitude, newReport.longitude] : null"
           [reportPoints]="reports">
         </app-urban-degradation-map>
       </div>
@@ -106,22 +115,40 @@
   <div class="zip-dialog report-dialog" (click)="$event.stopPropagation()">
     <button class="zip-close" (click)="closeReportModal()">✕</button>
     <h4 class="zip-title text-left">Nova denúncia colaborativa</h4>
+    <p class="text-muted text-left mb-4">
+      O local já foi marcado no mapa. Agora complete os dados da denúncia para enviar o problema urbano.
+    </p>
 
     <div class="form-group text-left">
-      <label>Localização selecionada no mapa</label>
+      <label>Local marcado no mapa</label>
       <div class="location-box" *ngIf="newReport.latitude; else noLocation">
         {{ newReport.latitude | number:'1.6-6' }}, {{ newReport.longitude | number:'1.6-6' }}
       </div>
       <ng-template #noLocation>
-        <div class="location-box muted">Clique no mapa para selecionar o local da denúncia.</div>
+        <div class="location-box muted">
+          Nenhum local foi marcado ainda. Feche este formulário e use o botão <strong>Marcar denúncia no mapa</strong>.
+        </div>
       </ng-template>
       <small class="form-text text-muted mt-2">
-        Dica: use o botão <strong>Fazer denúncia</strong> para abrir este formulário e depois clique no mapa para marcar o ponto.
+        Se quiser mudar o ponto, feche este formulário e marque novamente no mapa.
       </small>
     </div>
 
     <div class="form-group text-left">
-      <label>Foto do local</label>
+      <label>Etapa 1: escolha o tipo do problema</label>
+      <select class="form-control" [(ngModel)]="newReport.category">
+        <option value="">Selecione o tipo do problema urbano</option>
+        <option *ngFor="let category of reportCategories" [value]="category.value">
+          {{ category.label }}
+        </option>
+      </select>
+      <small class="form-text text-muted mt-2">
+        Escolha o tipo do problema urbano, como lixo, buracos, iluminação pública, segurança ou outro.
+      </small>
+    </div>
+
+    <div class="form-group text-left">
+      <label>Etapa 2: adicione uma foto (opcional)</label>
       <input class="form-control" type="file" accept="image/*" (change)="handleFileInput($event)">
       <div class="preview-wrap mt-3" *ngIf="imagePreview">
         <img [src]="imagePreview" alt="Pré-visualização" class="preview-image">
@@ -133,11 +160,11 @@
     </div>
 
     <div class="form-group text-left">
-      <label>Descrição</label>
-      <textarea class="form-control" rows="5" [(ngModel)]="newReport.description" placeholder="Descreva o tipo de resíduo, quantidade e referência do local"></textarea>
+      <label>Etapa 3: descreva o problema</label>
+      <textarea class="form-control" rows="5" [(ngModel)]="newReport.description" placeholder="Descreva o problema, a gravidade e algum ponto de referência do local"></textarea>
     </div>
 
-    <button class="btn btn-primary btn-block" type="button" (click)="submitReport()" [disabled]="submitting || !newReport.latitude || !newReport.description.trim()">
+    <button class="btn btn-primary btn-block" type="button" (click)="submitReport()" [disabled]="submitting || !newReport.latitude || !newReport.category || !newReport.description.trim()">
       {{ submitting ? 'Enviando...' : 'Enviar denúncia' }}
     </button>
   </div>

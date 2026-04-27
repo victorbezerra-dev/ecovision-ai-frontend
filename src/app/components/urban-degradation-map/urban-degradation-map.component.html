@@ -12,6 +12,16 @@
   </div>
 
   <div class="card-body p-0">
+    <div class="report-selection-banner" *ngIf="selectingReportLocation">
+      <div>
+        <strong>Modo de marcação ativo</strong>
+        <span>Clique no mapa para posicionar o pin da denúncia.</span>
+      </div>
+      <button class="btn btn-sm btn-outline-danger" type="button" (click)="cancelReportSelection()">
+        Cancelar
+      </button>
+    </div>
+
     <div id="udm-map" class="udm-map"></div>
   </div>
 </div>

@@ -13,7 +13,7 @@ import { Subscription, timer } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { DetectionItem } from "../../models/detection";
 import { DetectionsService } from "../../services/detections.service";
-import { ReportItem } from '../../models/report';
+import { ReportCategory, ReportItem } from '../../models/report';
 
 @Component({
   selector: "app-urban-degradation-map",
@@ -27,16 +27,35 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
 
   @Input() refreshMs = 0;
   @Input() reportPoints: ReportItem[] = [];
+  @Input() selectingReportLocation = false;
+  @Input() selectedReportLocation: [number, number] | null = null;
 
   @Output() addNew = new EventEmitter<void>();
   @Output() reportLocationSelected = new EventEmitter<[number, number]>();
+  @Output() reportLocationSelectionCanceled = new EventEmitter<void>();
 
   public map!: L.Map;
   private pointsLayer = L.layerGroup();
   private reportLayer = L.layerGroup();
+  private selectionLayer = L.layerGroup();
   private autoRefreshSub?: Subscription;
 
   constructor(private service: DetectionsService) {}
+
+  private readonly reportCategoryLabels: Record<ReportCategory, string> = {
+    trash: 'Lixo irregular',
+    pothole: 'Buracos na via',
+    'public-lighting': 'Iluminação pública',
+    security: 'Segurança',
+    sidewalk: 'Calçada / acessibilidade',
+    other: 'Outro problema urbano',
+  };
+
+  private readonly reportStatusLabels: Record<string, string> = {
+    pending: 'Pendente',
+    resolved: 'Resolvido',
+    invalid: 'Inválido',
+  };
 
   private reportIcon = L.divIcon({
     className: "custom-report-marker",
@@ -96,6 +115,32 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
     popupAnchor: [0, -18],
   });
 
+  private selectionIcon = L.divIcon({
+    className: "custom-selection-marker",
+    html: `
+      <div style="
+        width: 38px;
+        height: 38px;
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        border: 2px solid #ffffff;
+        box-shadow: 0 10px 22px rgba(0,0,0,0.28);
+        position: relative;
+      ">
+        <div style="
+          position:absolute;
+          inset: 9px;
+          border-radius: 50%;
+          background:#fff;
+          transform: rotate(45deg);
+        "></div>
+      </div>
+    `,
+    iconSize: [38, 38],
+    iconAnchor: [10, 32],
+  });
+
   ngAfterViewInit(): void {
     this.map = L.map("udm-map", {
       center: this.center,
@@ -117,15 +162,21 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
 
     this.pointsLayer.addTo(this.map);
     this.reportLayer.addTo(this.map);
+    this.selectionLayer.addTo(this.map);
     setTimeout(() => this.map?.invalidateSize(), 0);
     window.addEventListener("resize", this.handleResize, false);
 
     this.map.on('click', (event: L.LeafletMouseEvent) => {
+      if (!this.selectingReportLocation) {
+        return;
+      }
+
       this.reportLocationSelected.emit([event.latlng.lat, event.latlng.lng]);
     });
 
     this.loadPoints();
     this.plotReports();
+    this.plotSelectedLocation();
 
     if (this.refreshMs && this.refreshMs > 0) {
       this.autoRefreshSub = timer(this.refreshMs, this.refreshMs)
@@ -200,6 +251,10 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
     if (changes['reportPoints'] && this.map) {
       this.plotReports();
     }
+
+    if ((changes['selectedReportLocation'] || changes['selectingReportLocation']) && this.map) {
+      this.plotSelectedLocation();
+    }
   }
 
   private plotReports(): void {
@@ -211,16 +266,32 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
       }
 
       const marker = L.marker([report.latitude, report.longitude], { icon: this.reportIcon });
+      const categoryLabel = this.reportCategoryLabels[report.category] || 'Problema urbano';
+      const statusLabel = this.reportStatusLabels[report.status] || report.status;
       marker.bindPopup(`
         <div style="min-width:220px">
           <div style="font-weight:600;margin-bottom:6px">${report.userName}</div>
+          <div style="font-size:12px;font-weight:600;margin-bottom:6px;color:#111827">Tipo: ${categoryLabel}</div>
           <div style="font-size:12px;margin-bottom:8px">${report.description}</div>
           ${report.imageUrl ? `<img src="${report.imageUrl}" alt="denúncia" style="width:100%;border-radius:8px;display:block;margin-bottom:8px;" />` : ''}
-          <span style="font-size:11px;color:#6b7280">Status: ${report.status}</span>
+          <span style="font-size:11px;color:#6b7280">Status: ${statusLabel}</span>
         </div>
       `);
       marker.addTo(this.reportLayer);
     });
+  }
+
+  private plotSelectedLocation(): void {
+    this.selectionLayer.clearLayers();
+
+    if (!this.selectedReportLocation) {
+      return;
+    }
+
+    const [lat, lng] = this.selectedReportLocation;
+    const marker = L.marker([lat, lng], { icon: this.selectionIcon });
+    marker.bindPopup('Local da denúncia marcado').openPopup();
+    marker.addTo(this.selectionLayer);
   }
 
   private offsetByMeters(
@@ -286,6 +357,10 @@ export class UrbanDegradationMapComponent implements AfterViewInit, OnChanges, O
 
   public onAddNewClick(): void {
     this.addNew.emit();
+  }
+
+  public cancelReportSelection(): void {
+    this.reportLocationSelectionCanceled.emit();
   }
 
   private handleResize = () => {
