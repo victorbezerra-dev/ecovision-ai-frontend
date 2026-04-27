@@ -6,29 +6,120 @@
 }
 
 .card.card-stats {
-  overflow: hidden;
+  overflow: visible;
+}
+
+.card-body {
+  overflow-x: auto;
 }
 
 .chart-wrapper {
   position: relative;
+  flex: 0 0 auto;
   display: flex;
   justify-content: center;
+  align-items: center;
+  width: 320px;
+  min-width: 320px;
+  height: 300px;
+  overflow: visible;
+}
+
+.chart-tooltip {
+  position: absolute;
+  z-index: 20;
+  transform: translate(-50%, calc(-100% - 10px));
+  pointer-events: none;
+  background: rgba(32, 33, 36, 0.96);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.55rem 0.7rem;
+  min-width: 160px;
+  max-width: 260px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+.chart-tooltip-title {
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.2rem;
+}
+
+.chart-tooltip-text {
+  font-size: 0.8rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.chart-layout {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.chart-legend {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.legend-color {
+  width: 8px;
+  height: 20px;
+  border-radius: 0;
+  flex: 0 0 8px;
+}
+
+.legend-text {
+  color: #5f6368;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 canvas {
-  max-width: 330px;
-  max-height: 420px;
-  width: 100% !important;
-  height: auto !important;
+  width: 320px !important;
+  height: 300px !important;
+  display: block;
 }
 
 @media (min-width: 769px) {
+  .chart-layout {
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .chart-layout {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
   .chart-wrapper {
-    justify-content: flex-start;
+    width: 260px;
+    min-width: 260px;
+    height: 260px;
+    justify-content: center;
+    margin: 0 auto;
   }
 
   canvas {
-    max-width: 380px;
-    max-height: 340px;
+    width: 260px !important;
+    height: 260px !important;
+  }
+
+  .chart-legend {
+    margin-top: 0.5rem;
   }
 }

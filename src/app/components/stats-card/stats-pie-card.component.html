@@ -7,7 +7,7 @@
         </h5>
         <span class="h2 font-weight-bold mb-0">por Total de Pontos</span>
         <p class="mt-2 mb-0 text-muted text-sm">
-          A legenda exibe <strong>lat, long</strong> e <strong>quantidade</strong>.
+          A legenda exibe <strong>o endereço em um raio aproximado</strong>.
         </p>
       </div>
       <div class="col-auto">
@@ -15,8 +15,26 @@
       </div>
     </div>
 
-    <div class="mt-3 chart-wrapper">
-      <canvas #pieCanvas></canvas>
+    <div class="mt-3 chart-layout">
+      <div class="chart-wrapper">
+        <canvas #pieCanvas></canvas>
+        <div
+          class="chart-tooltip"
+          *ngIf="activeTooltip"
+          [style.left.px]="activeTooltip.left"
+          [style.top.px]="activeTooltip.top"
+        >
+          <div class="chart-tooltip-title">{{ activeTooltip.title }}</div>
+          <div class="chart-tooltip-text">{{ activeTooltip.text }}</div>
+        </div>
+      </div>
+
+      <div class="chart-legend" *ngIf="legendItems.length">
+        <div class="legend-item" *ngFor="let item of legendItems">
+          <span class="legend-color" [style.backgroundColor]="item.color"></span>
+          <span class="legend-text">{{ item.label }}</span>
+        </div>
+      </div>
     </div>
   </div>
 </div>
