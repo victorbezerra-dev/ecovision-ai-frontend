@@ -13,6 +13,25 @@
   <div class="container-fluid mt--7">
     <div class="row mb-4">
       <div class="col-12">
+        <div class="report-cta-card">
+          <div>
+            <span class="report-cta-eyebrow">Denúncia colaborativa</span>
+            <h4 class="mb-2">Encontrou um ponto de descarte irregular?</h4>
+            <p class="mb-0 text-muted">
+              Assim você ajuda a prefeitura a identificar pontos de lixo com mais rapidez e também contribui como cidadão para uma cidade mais limpa.
+            </p>
+          </div>
+
+          <button class="btn btn-danger report-cta-button" type="button" (click)="openReportModal()">
+            <i class="ni ni-notification-70 mr-2"></i>
+            Fazer denúncia
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-12">
         <app-urban-degradation-map
           [title]="'Mapa de sustentabilidade urbana'"
           [center]="[-8.762, -63.9039]"
@@ -96,6 +115,9 @@
       <ng-template #noLocation>
         <div class="location-box muted">Clique no mapa para selecionar o local da denúncia.</div>
       </ng-template>
+      <small class="form-text text-muted mt-2">
+        Dica: use o botão <strong>Fazer denúncia</strong> para abrir este formulário e depois clique no mapa para marcar o ponto.
+      </small>
     </div>
 
     <div class="form-group text-left">
