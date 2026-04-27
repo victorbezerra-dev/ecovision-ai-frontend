@@ -1,40 +1,77 @@
-<div class="header bg-gradient-eco pb-8 pt-md-6">
-  <div class="container-fluid">
-    <div class="header-body">
-      <div class="mb-4">
-        <ng-container *ngIf="!loading && !errorMsg; else loadingOrError">
-          <app-stats-pie-card [data]="stats"></app-stats-pie-card>
-        </ng-container>
-
-        <ng-template #loadingOrError>
-          <div class="card card-stats">
-            <div class="card-body">
-              <ng-container *ngIf="loading">
-                <span class="text-muted">Carregando estatísticas...</span>
-              </ng-container>
-              <ng-container *ngIf="!loading && errorMsg">
-                <span class="text-danger">{{ errorMsg }}</span>
-              </ng-container>
-            </div>
-          </div>
-        </ng-template>
+<ng-container *ngIf="!loading; else loadingOrError">
+  <div class="header bg-gradient-eco pb-8 pt-md-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <div class="mb-4">
+          <ng-container *ngIf="!errorMsg; else statsError">
+            <app-stats-pie-card [data]="stats"></app-stats-pie-card>
+          </ng-container>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="container-fluid mt--7">
-  <div class="row mb-4">
-    <div class="col-12">
-      <app-urban-degradation-map
-        [title]="'Mapa de sustentabilidade urbana'"
-        [center]="[-8.762, -63.9039]"
-        [zoom]="13"
-        (addNew)="onAddNewPoint()"
-        (reportLocationSelected)="onReportLocationSelected($event)"
-        [reportPoints]="reports">
-      </app-urban-degradation-map>
+  <div class="container-fluid mt--7">
+    <div class="row mb-4">
+      <div class="col-12">
+        <app-urban-degradation-map
+          [title]="'Mapa de sustentabilidade urbana'"
+          [center]="[-8.762, -63.9039]"
+          [zoom]="13"
+          (addNew)="onAddNewPoint()"
+          (reportLocationSelected)="onReportLocationSelected($event)"
+          [reportPoints]="reports">
+        </app-urban-degradation-map>
+      </div>
     </div>
   </div>
+</ng-container>
+
+<ng-template #loadingOrError>
+  <div class="header bg-gradient-eco pb-8 pt-md-6">
+    <div class="container-fluid">
+      <div class="header-body">
+        <ng-container *ngIf="loading; else loadingError">
+          <div class="shimmer-card mb-4">
+            <div class="shimmer-line shimmer-title"></div>
+            <div class="shimmer-chart"></div>
+            <div class="shimmer-legend">
+              <div class="shimmer-line"></div>
+              <div class="shimmer-line"></div>
+              <div class="shimmer-line short"></div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid mt--7" *ngIf="loading">
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="shimmer-map-card">
+          <div class="shimmer-line shimmer-map-title"></div>
+          <div class="shimmer-map"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #loadingError>
+  <div class="card card-stats mb-4">
+    <div class="card-body">
+      <span class="text-danger">{{ errorMsg }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #statsError>
+  <div class="card card-stats">
+    <div class="card-body">
+      <span class="text-danger">{{ errorMsg }}</span>
+    </div>
+  </div>
+</ng-template>
 
 
 

@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   stats: ClusterStats[] = [];
   loading = false;
   errorMsg: string | null = null;
+  private statsLoaded = false;
+  private reportsLoaded = false;
 
   showZip = false;
   reports: ReportItem[] = [];
@@ -60,6 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ];
     this.data = this.datasets[0];
 
+    this.loading = true;
     this.loadStats();
     this.bindAuth();
     this.bindReports();
@@ -73,18 +76,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private loadStats(): void {
-    this.loading = true;
     this.errorMsg = null;
+    this.statsLoaded = false;
 
     this.sub = this.statsService.fetchStats().subscribe({
       next: (arr) => {
         this.stats = arr || [];
-        this.loading = false;
+        this.statsLoaded = true;
+        this.updateLoadingState();
       },
       error: (err) => {
         console.error('Erro ao buscar stats', err);
         this.errorMsg = 'Não foi possível carregar as estatísticas.';
-        this.loading = false;
+        this.statsLoaded = true;
+        this.updateLoadingState();
       }
     });
   }
@@ -243,16 +248,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private bindReports(): void {
+    this.reportsLoaded = false;
     this.reportsSub = this.reportsService.watchReports().subscribe({
       next: (reports) => {
         this.reports = reports;
         this.reportsError = null;
+        this.reportsLoaded = true;
+        this.updateLoadingState();
       },
       error: (error) => {
         console.error('Erro ao carregar denúncias', error);
         this.reportsError = 'Erro ao carregar denúncias colaborativas.';
+        this.reportsLoaded = true;
+        this.updateLoadingState();
       },
     });
+  }
+
+  private updateLoadingState(): void {
+    this.loading = !(this.statsLoaded && this.reportsLoaded);
   }
 
   private fileToDataUrl(file: File): Promise<string> {

@@ -237,6 +237,87 @@
   border-radius: 1rem;
 }
 
+.shimmer-card,
+.shimmer-map-card {
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(15, 23, 42, 0.08);
+}
+
+.shimmer-line,
+.shimmer-chart,
+.shimmer-map {
+  position: relative;
+  overflow: hidden;
+  background: #e9ecef;
+}
+
+.shimmer-line::after,
+.shimmer-chart::after,
+.shimmer-map::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(233, 236, 239, 0) 0%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(233, 236, 239, 0) 100%
+  );
+  animation: shimmer 1.4s infinite;
+}
+
+.shimmer-title {
+  height: 24px;
+  width: 240px;
+  border-radius: 999px;
+  margin-bottom: 1.5rem;
+}
+
+.shimmer-chart {
+  width: 100%;
+  height: 320px;
+  border-radius: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.shimmer-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.shimmer-line {
+  height: 14px;
+  width: 100%;
+  border-radius: 999px;
+}
+
+.shimmer-line.short {
+  width: 70%;
+}
+
+.shimmer-map-title {
+  height: 20px;
+  width: 220px;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+}
+
+.shimmer-map {
+  width: 100%;
+  height: 520px;
+  border-radius: 1rem;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 @media (max-width: 768px) {
   .report-row,
   .ranking-row {
@@ -248,13 +329,26 @@
     width: 100%;
     height: 180px;
   }
+
+  .shimmer-title,
+  .shimmer-map-title,
+  .shimmer-line.short {
+    width: 100%;
+  }
+
+  .shimmer-chart {
+    height: 260px;
+  }
+
+  .shimmer-map {
+    height: 360px;
+  }
 }
 
-/* Fundo translúcido cobrindo toda a tela */
 .zip-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(17, 24, 39, 0.6); /* preto translúcido */
+  background: rgba(17, 24, 39, 0.6); 
   backdrop-filter: blur(4px);
   z-index: 1050;
   display: flex;
@@ -263,7 +357,6 @@
   animation: fadeIn 0.25s ease;
 }
 
-/* Caixa central do diálogo */
 .zip-dialog {
   position: relative;
   background: #fff;
@@ -276,7 +369,6 @@
   animation: scaleIn 0.25s ease;
 }
 
-/* Título */
 .zip-title {
   margin-bottom: 16px;
   font-weight: 600;
@@ -284,7 +376,6 @@
   color: #111827;
 }
 
-/* Botão de fechar */
 .zip-close {
   position: absolute;
   top: 10px;
@@ -301,7 +392,6 @@
   color: #111827;
 }
 
-/* Animações */
 @keyframes fadeIn {
   from { opacity: 0; }
   to   { opacity: 1; }
